@@ -105,6 +105,7 @@ celerybeat.pid
 .env
 .venv
 env/
+proyecto-django/
 venv/
 ENV/
 env.bak/
