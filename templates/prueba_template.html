@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prueba_template</title>
+</head>
+<body>
+
+    {% if edad > 20 %}
+    <p>{{nombre}} {{apellido}} </p>
+    {% elif edad > 15 %}
+    <p style="color: green">{{nombre}} {{apellido}} </p>
+    {% else %}
+    <p style="color: red">{{nombre}} {{apellido}} </p>
+    {% endif %}
+    
+    {%for año in años%} 
+    <!-- forloop.counter es una opcion de djando para poner mostrar el indice del for en html 
+    y me va a decir en la iocion tal estan en el indice tal. Se puede ver estas cosas en django documentacion-->
+    <h3><li>valor del listado numero {{forloop.counter}} es: {{año}}</li></h3>
+    {%endfor%}
+</body>
+</html>
