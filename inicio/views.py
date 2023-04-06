@@ -5,6 +5,8 @@ from datetime import datetime
 from django.template import Template, Context, loader
 #Me traigo la vista Animal de models.
 from inicio.models import Animal
+#Importo para laburar en render
+from django.shortcuts import render
 
 def mi_vista(request):
     return HttpResponse ("<h1>Mi primera vista</h1>")
@@ -38,7 +40,7 @@ def mostrar_fecha(request):
     dt_formateado = dt.strftime("%A %d %B %Y %I:%M")
     #Abro el archivo de template (lo abro con loader porque odifiqué el path de donde leo los templates y ya, no es
     # un archivo de python sino que utilizo el loader)
-    template = loader.get_template(r'mostrar_fecha.html')
+    template = loader.get_template(r'inicio/mostrar_fecha.html')
     template_renderizado = template.render({'fecha': dt_formateado})
     return HttpResponse(template_renderizado)
 
@@ -49,7 +51,7 @@ def prueba_template(request):
         'edad':16,
         'años': [1995, 2004, 2017, 2021, 2022]
     }
-    template = loader.get_template(r'prueba_template.html')
+    template = loader.get_template(r'inicio/prueba_template.html')
     template_renderizado = template.render(datos)
     return HttpResponse(template_renderizado)
 
@@ -59,7 +61,13 @@ def crear_animal(request):
     print(animal.edad)
     animal.save()
     datos = {'animal': animal }
-    template = loader.get_template(r'crear_animal.html')
+    template = loader.get_template(r'inicio/crear_animal.html')
     template_renderizado = template.render(datos)
     return HttpResponse(template_renderizado)
 
+def prueba_render(request):
+    datos = {'nombre': 'Pepe'}
+    # template = loader.get_template(r'prueba_render.html')
+    # template_renderizado = template.render(datos)
+    # return HttpResponse(template_renderizado) 
+    return render(request, r'inicio/prueba_render.html', datos)
