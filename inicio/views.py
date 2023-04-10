@@ -5,8 +5,10 @@ from datetime import datetime
 from django.template import Template, Context, loader
 #Me traigo la vista Animal de models.
 from inicio.models import Animal
-#Importo para laburar en render
-from django.shortcuts import render
+#Importo para laburar en render y el redirect en los formularios
+from django.shortcuts import render, redirect
+#metraigo el formulario de forms.py
+from inicio.forms import CreacionAnimalFormulario
 
 def mi_vista(request):
     # return HttpResponse ("<h1>Mi primera vista</h1>")
@@ -56,15 +58,49 @@ def prueba_template(request):
     template_renderizado = template.render(datos)
     return HttpResponse(template_renderizado)
 
+#V1
+# def crear_animal(request):
+#     animal = Animal(nombre='Ricardtio', edad= 3)
+#     print (animal.nombre)
+#     print(animal.edad)
+#     animal.save()
+#     datos = {'animal': animal }
+#     template = loader.get_template(r'inicio/crear_animal.html')
+#     template_renderizado = template.render(datos)
+#     return HttpResponse(template_renderizado)
+
+#V2 Con formulario manual y noel de django
+# def crear_animal(request):
+#     #Guardo en animal el objeto creado en models Animal, con request.POST lo que le digo es del post que viene
+#     #toma el nombre. Lo mismo para edad. Luego en save lo guardo.
+#     if request.method == 'POST':
+#         animal = Animal(nombre= request.POST ['nombre'], edad= request.POST ['edad'])
+#         animal.save()
+#     return render(request, 'inicio/crear_animal_v2.html')
+
+#V3 Con formulario de django
 def crear_animal(request):
-    animal = Animal(nombre='Ricardtio', edad= 3)
-    print (animal.nombre)
-    print(animal.edad)
-    animal.save()
-    datos = {'animal': animal }
-    template = loader.get_template(r'inicio/crear_animal.html')
-    template_renderizado = template.render(datos)
-    return HttpResponse(template_renderizado)
+    if request.method == 'POST':
+        #Creo un formulario del tipo CreacionAimalFormulario con la info que trae el post.
+        formulario = CreacionAnimalFormulario(request.POST)
+        #Verifico si el formulario es valido con la info que se nos pasa
+        if formulario.is_valid():
+            #Ahora le digo que los datos los tome desde
+            datos_correctos = formulario.cleaned_data
+            animal = Animal(nombre= datos_correctos ['nombre'], edad= datos_correctos ['edad'])
+            animal.save()
+            #Ahora para que vaya al formulario le digo que vaya al lista_formulario para eso cargo redirect en donde
+            #exporto los paquetes. listar_aniamles es lo que le defini en name desde urls.py:
+            return redirect('listar_animales')
+    #en caso que no sea post o no sea valido vendrá aca:
+    formulario = CreacionAnimalFormulario()
+    return render(request, 'inicio/crear_animal_v3.html', {'formulario': formulario})
+    
+
+
+#Vista para mostrar los animales creados en crear animal
+def lista_animales(request):
+    return render(request, 'inicio/lista_animales.html',)
 
 def prueba_render(request):
     datos = {'nombre': 'Pepe'}
@@ -72,3 +108,4 @@ def prueba_render(request):
     # template_renderizado = template.render(datos)
     # return HttpResponse(template_renderizado) 
     return render(request, r'inicio/prueba_render.html', datos)
+

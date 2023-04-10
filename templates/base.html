@@ -32,6 +32,7 @@
             </div>
         </nav>
         <!-- Masthead-->
+        {% block header%}
         <header class="masthead">
             <div class="container position-relative">
                 <div class="row justify-content-center">
@@ -46,6 +47,9 @@
                 </div>
             </div>
         </header>
+        {% endblock header%}
+        {% block contenido%}
+        {% endblock contenido%}
         <!-- Footer-->
         <footer class="footer bg-light">
             <div class="container">

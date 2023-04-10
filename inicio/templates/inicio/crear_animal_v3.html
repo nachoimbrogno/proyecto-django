@@ -1,0 +1,22 @@
+<!-- Version de template 2 utilizando formilarios manuales - NO LO DE DJANGO POR DEFECTO-->
+{% extends 'base.html' %}
+
+{% block title_head%}
+<title>Crear Animal</title>
+{% endblock title_head%}
+
+{% block h1_header%}
+<h1>Crear Animal</h1>
+{% endblock h1_header%}
+
+
+{% block contenido%}
+<form action={% url 'crear_animal' %} method="POST">
+    {% csrf_token %}
+    <!--El table es para que al momento de mostrarlo en la pagina lo haga como una tabla (uno abajo del otro)-->
+    <table>
+        {{formulario}}
+    </table>
+    <button>Crear</button>
+</form>
+{% endblock contenido%}
