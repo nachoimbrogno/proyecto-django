@@ -8,7 +8,7 @@ from inicio.models import Animal
 #Importo para laburar en render y el redirect en los formularios
 from django.shortcuts import render, redirect
 #metraigo el formulario de forms.py
-from inicio.forms import CreacionAnimalFormulario
+from inicio.forms import CreacionAnimalFormulario, BuscarAnimal
 
 def mi_vista(request):
     # return HttpResponse ("<h1>Mi primera vista</h1>")
@@ -100,7 +100,18 @@ def crear_animal(request):
 
 #Vista para mostrar los animales creados en crear animal
 def lista_animales(request):
-    return render(request, 'inicio/lista_animales.html',)
+    #el request.GET es como un diccionario y puedo obtenet la informacion que esta en una llave y sino none
+    nombre_a_buscar = request.GET.get('nombre', None)
+    #Ahora sí, nombre a buscar no esta vacio que devuelva todo, pero si mandan otro filtro los que tiene 
+    #nombre a buscar
+    if nombre_a_buscar:
+        #Busco los animales que yo pongo en nombre a buscar con el get. Lo que hace icontains es buscar los 
+        #que contienen lo que yo quiero buscar y no lo exacto
+        animales = Animal.objects.filter(nombre__icontains=nombre_a_buscar)
+    else:
+        animales = Animal.objects.all()
+    formulario_busqueda = BuscarAnimal()
+    return render(request, 'inicio/lista_animales.html', {'animales': animales, 'formulario': formulario_busqueda})
 
 def prueba_render(request):
     datos = {'nombre': 'Pepe'}

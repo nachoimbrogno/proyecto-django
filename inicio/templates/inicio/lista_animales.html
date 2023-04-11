@@ -10,7 +10,26 @@
 
 
 {% block contenido%}
-<li>
-    Nombre: {{animal.nombre}} - Edad: {{animal.edad}}
-</li>
+<!--creo el tag para el formulario de la busqueda-->
+<p>
+    <!--al ser una busqueda el metodo es el get y el {% url 'listar_animales'%} es a donde me va a mandar una vez 
+        hecha-->
+    <form action={% url 'listar_animales'%} method="get">
+        {{formulario}}
+        <button>Buscar</button>
+    </form>
+</p>
+
+<!--el if es para darle un mensaje por pantalla, si animales tiene algo cargado lo muestra pero sino avisa 
+    que no hay nada-->
+{%if animales%}
+    <!-- creo un for para poder recorrer toda la lista de animales y poder mostrarlo de forma de lista-->
+    {% for animal in animales%}
+    <li>
+        Nombre: {{animal.nombre}} - Edad: {{animal.edad}}
+    </li>
+    {% endfor%}
+{%else%}
+    <h2> No hay datos sobre animales por el momento</h2>
+{% endif%}
 {% endblock contenido%}
