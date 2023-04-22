@@ -19,7 +19,6 @@
         <button>Buscar</button>
     </form>
 </p>
-
 <!--el if es para darle un mensaje por pantalla, si animales tiene algo cargado lo muestra pero sino avisa 
     que no hay nada-->
 {%if animales%}
@@ -27,6 +26,11 @@
     {% for animal in animales%}
     <li>
         Nombre: {{animal.nombre}} - Edad: {{animal.edad}}
+    <!-- Creo un ancla para que me envie a la pestaña eliminar. En animal.id le digo del animal vas a tomar el id
+        para luego tener el id para borrar.-->
+    <button>
+    <a class="navbar-brand" href="{% url 'eliminar_animal' animal.id %}">Eliminar</a>
+    </button>
     </li>
     {% endfor%}
 {%else%}

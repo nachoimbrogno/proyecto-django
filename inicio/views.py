@@ -113,6 +113,15 @@ def lista_animales(request):
     formulario_busqueda = BuscarAnimal()
     return render(request, 'inicio/lista_animales.html', {'animales': animales, 'formulario': formulario_busqueda})
 
+#Funcion para borrar animales de la base, el id_animales lo tomara el post de la url que le dara el id del animal.
+def eliminar_animal(request,id_animal):
+    #utilizó el Animal.objects.get ya que el get nos va a traer informacion. Indicandole por atributo, en este caso el id
+    animal_a_eliminar = Animal.objects.get(id=id_animal)
+    #borro el objeto, el animal en este caso.
+    animal_a_eliminar.delete()
+    #Esto lo hago para que luego de eliminar vuelva a la  lista de animales.
+    return redirect('listar_animales')
+
 def prueba_render(request):
     datos = {'nombre': 'Pepe'}
     # template = loader.get_template(r'prueba_render.html')
