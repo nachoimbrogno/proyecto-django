@@ -8,7 +8,7 @@ from inicio.models import Animal
 #Importo para laburar en render y el redirect en los formularios
 from django.shortcuts import render, redirect
 #metraigo el formulario de forms.py
-from inicio.forms import CreacionAnimalFormulario, BuscarAnimal
+from inicio.forms import CreacionAnimalFormulario, BuscarAnimal, ModificarAnimalFormulario
 
 def mi_vista(request):
     # return HttpResponse ("<h1>Mi primera vista</h1>")
@@ -121,6 +121,32 @@ def eliminar_animal(request,id_animal):
     animal_a_eliminar.delete()
     #Esto lo hago para que luego de eliminar vuelva a la  lista de animales.
     return redirect('listar_animales')
+
+#Vista para modificar animal en la base:
+def modificar_animal(request, id_animal):
+    animal_a_modificar = Animal.objects.get(id=id_animal)
+    #Valido si el request viene por POST
+    if request.method == "POST":
+        #guarda el formulario para modificar y guardo en la request del POST
+        formulario = ModificarAnimalFormulario(request.POST)
+        if formulario.is_valid():
+            data_limpia = formulario.cleaned_data
+            #Ya tengo que vine por post, arme el formulario con la info del request y valide que es valido el
+            #formulario. Guardo la data en data limpia y actualizo los datos.
+            #a la variable creada al ppio de la funcion le actualizo el nombre y la edad.
+            animal_a_modificar.nombre = data_limpia['nombre']
+            animal_a_modificar.edad = data_limpia['edad']
+            animal_a_modificar.save()
+            return redirect('listar_animales')
+    #Si no viene por post le paso el formulario vacio, el initial es para que al momento de ver el campo por pantalle
+    #te muestre el valor que tiene actualmente.
+    formulario = ModificarAnimalFormulario(initial={"nombre": animal_a_modificar.nombre, "edad": animal_a_modificar.edad})
+    #Retorno un render con el request y un template que es el template donde este el formulario para modificar datos.
+    #le pasamos donde estara el html y el contexto es el formulario y el id del animal. Recordar crear el html en 
+    # teplates
+    return render(request, 'inicio/modificar_animales.html', {'formulario': formulario, 'id_animal': id_animal})
+
+
 
 def prueba_render(request):
     datos = {'nombre': 'Pepe'}

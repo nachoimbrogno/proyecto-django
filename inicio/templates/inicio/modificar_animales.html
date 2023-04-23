@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title_head%}
+<title>Modificar Animal</title>
+{% endblock title_head%}
+
+{% block h1_header%}
+<h1>Modificar Animal</h1>
+{% endblock h1_header%}
+
+
+{% block contenido%}
+<!-- el path de la url en urls.py y el id del animal que le paso en la vista modificar_animal-->
+<form action={% url 'modificar_animal' id_animal %} method="POST">
+    {% csrf_token %}
+    <table>
+        {{formulario}}
+    </table>
+    <button>Modificar</button>
+</form>
+{% endblock contenido%}

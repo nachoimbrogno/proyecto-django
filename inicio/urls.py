@@ -14,6 +14,7 @@ urlpatterns = [
     path('animales/crear/', views.crear_animal, name='crear_animal'),
     #El int_id es para pasarle el id del objeto a eliminar en al base.
     path('animales/<int:id_animal>/eliminar', views.eliminar_animal, name='eliminar_animal'),
+    path('animales/<int:id_animal>/modificar', views.modificar_animal, name='modificar_animal'),
 ]
 
 
