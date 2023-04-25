@@ -122,6 +122,14 @@ def eliminar_animal(request,id_animal):
     #Esto lo hago para que luego de eliminar vuelva a la  lista de animales.
     return redirect('listar_animales')
 
+#Funcion para mostrar un animal especifico de la base, el id_animales lo tomara el post de la url que le dara el id del animal.
+def mostrar_animal(request,id_animal):
+    #utilizó el Animal.objects.get para buscar el animal especifico (el get nos va a traer informacion). Indicandole por atributo, en este caso el id
+    animal_a_mostrar = Animal.objects.get(id=id_animal)
+    #Hago un nuevo render para mostrarlo, que pasa el request y el html es mostrar animal y al contexto le voy
+    #a estar pasando el animal a mostrar
+    return render(request, 'inicio/mostrar_animal.html', {'animal_a_mostrar': animal_a_mostrar})
+
 #Vista para modificar animal en la base:
 def modificar_animal(request, id_animal):
     animal_a_modificar = Animal.objects.get(id=id_animal)

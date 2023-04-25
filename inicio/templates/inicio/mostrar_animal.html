@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title_head%}
+<title>Animal</title>
+{% endblock title_head%}
+
+{% block h1_header%}
+<!--en el eader que aparezca el animal a mostrar -->
+<h1>{{animal_a_mostrar}}</h1>
+{% endblock h1_header%}
+
+
+{% block contenido%}
+<!--ul es una etiqueta para poner dentro de una lista desordenada -->
+<ul>
+    <!--pongo el animal a buscar generado en la vies de mostrar_animal y le agrego el campo especifico a mostrar -->
+    <li>Nombre: {{animal_a_mostrar.nombre}}</li>
+    <li>Edad: {{animal_a_mostrar.edad}}</li>
+    <li>Cantidad de dientes: {{animal_a_mostrar.cant_dientes}}</li>
+</ul>
+<!--Esto lo agrego para que en la vista que muestra el animal tenga la posibilidad de modificarlo o borrarlo.
+Esto es tabien lo que figura en lista_animales.html, lo copié igual para que en este template tabien pueda
+tenerlo, solo le modifique animal.id por animal_a_mostrar.id-->
+<button>
+    <a class="navbar-brand" href="{% url 'modificar_animal' animal_a_mostrar.id %}">Modificar</a>
+</button>
+<button>
+<a class="navbar-brand" href="{% url 'eliminar_animal' animal_a_mostrar.id %}">Eliminar</a>
+</button>
+
+{% endblock contenido%}
