@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title_head%}
+<title>Animales</title>
+{% endblock title_head%}
+
+{% block h1_header%}
+<h1>Listado de animales</h1>
+{% endblock h1_header%}
+
+
+{% block contenido%}
+<a class="navbar-brand" href="{% url 'crear_animal'%}"> Crear Animal</a>
+<!--El dato que recibe de la vista es object_list, por defecto -->
+{%if object_list%}
+    <!-- creo un for para poder recorrer todo el object_list que me envia la vista en CBV-->
+    {% for animal in object_list%}
+    <li>
+    <!-- Hago que el mismo ancla muestre el animal(si me paro en el nombre del animal en la url me enviará a 
+        la vista mostrar_animal directamente). Por eso recibe el parametro {{animal}}-->
+        <a class="navbar-brand" href="{% url 'mostrar_animal' animal.id %}">{{animal}}</a>
+        <!-- Creo un ancla para que me envie a la pestaña modificar. En animal.id le digo del animal - el del for-  
+       vas a tomar el id para luego tener el id para borrar.-->
+       <button>
+        <a class="navbar-brand" href="{% url 'modificar_animal' animal.id %}">Modificar</a>
+    </button>
+    <!-- Creo un ancla para que me envie a la pestaña eliminar. En animal.id le digo del animal - el del for-  
+        vas a tomar el id para luego tener el id para borrar.-->
+    <button>
+    <a class="navbar-brand" href="{% url 'eliminar_animal' animal.id %}">Eliminar</a>
+    </button>
+    </li>
+    {% endfor%}
+{%else%}
+    <h2> No hay datos sobre animales por el momento</h2>
+{% endif%}
+{% endblock contenido%}

@@ -9,6 +9,10 @@ from inicio.models import Animal
 from django.shortcuts import render, redirect
 #metraigo el formulario de forms.py
 from inicio.forms import CreacionAnimalFormulario, BuscarAnimal, ModificarAnimalFormulario
+#Import para poder listar objetos con CBV
+from django.views.generic.list import ListView
+#Import para poder crear objetos con CBV
+from django.views.generic.edit import CreateView
 
 def mi_vista(request):
     # return HttpResponse ("<h1>Mi primera vista</h1>")
@@ -57,6 +61,16 @@ def prueba_template(request):
     template = loader.get_template(r'inicio/prueba_template.html')
     template_renderizado = template.render(datos)
     return HttpResponse(template_renderizado)
+
+def prueba_render(request):
+    datos = {'nombre': 'Pepe'}
+    # template = loader.get_template(r'prueba_render.html')
+    # template_renderizado = template.render(datos)
+    # return HttpResponse(template_renderizado) 
+    return render(request, r'inicio/prueba_render.html', datos)
+
+
+#VISTAS COMUNES PARA ANIMALES
 
 #V1
 # def crear_animal(request):
@@ -156,10 +170,25 @@ def modificar_animal(request, id_animal):
 
 
 
-def prueba_render(request):
-    datos = {'nombre': 'Pepe'}
-    # template = loader.get_template(r'prueba_render.html')
-    # template_renderizado = template.render(datos)
-    # return HttpResponse(template_renderizado) 
-    return render(request, r'inicio/prueba_render.html', datos)
+#CBV (CLASES BASADAS EN VISTAS) VISTAS PARA ANIMALES
+#a la clase se le tiene que pasar como argumento ListView
+class ListaAnimales(ListView):
+    #primero le tengo que decir el modelo con el que va a trabajar.
+    model = Animal
+    #Despues el template con el que va a laburar. Ya no le paso el diccionario sino que recibira el un object_list.
+    #generado automaticamente por django
+    template_name = 'inicio/CBV/lista_animales.html'
 
+#a la clase se le tiene que pasar como argumento CreatedView 
+class CrearAnimal(CreateView):
+    #primero le tengo que decir el modelo con el que va a trabajar.
+    model = Animal
+    #Despues el template con el que va a laburar. Ya no le paso el diccionario sino que recibira el un form.
+    #generado automaticamente por django
+    template_name = 'inicio/CBV/crear_animal_v3.html'
+    #PAra que cuando se cree el objeto correctamente con la vista un animal quiero que vaya a esa url, para eso se le pasa 
+    # la url base a la que quiero que vaya (el contexto), desde el puerto para atras: 
+    #la url es http://127.0.0.1:8000/inicio/animales/  --> inicio/animales/ 
+    success_url = '/inicio/animales/'
+    # aca se le indica los capos que quiero que se le pida al usuario en la creacion:
+    fields = ['nombre', 'edad']
