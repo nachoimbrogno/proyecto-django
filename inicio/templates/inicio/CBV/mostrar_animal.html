@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title_head%}
+<title>Animal</title>
+{% endblock title_head%}
+
+{% block h1_header%}
+<!-- A diferencia del anterior ahora poniendo solo animal ya sabe el animal porque la CBV de por sí ya tiene el 
+objeto completo(animal en este caso)-->
+<h1>{{animal}}</h1>
+{% endblock h1_header%}
+
+
+{% block contenido%}
+<!--ul es una etiqueta para poner dentro de una lista desordenada -->
+<ul>
+    <li>Nombre: {{animal.nombre}}</li>
+    <li>Edad: {{animal.edad}}</li>
+    <li>Cantidad de dientes: {{animal.cant_dientes}}</li>
+</ul>
+<button>
+    <a class="navbar-brand" href="{% url 'modificar_animal' animal.id %}">Modificar</a>
+</button>
+<button>
+<a class="navbar-brand" href="{% url 'eliminar_animal' animal.id %}">Eliminar</a>
+</button>
+
+{% endblock contenido%}

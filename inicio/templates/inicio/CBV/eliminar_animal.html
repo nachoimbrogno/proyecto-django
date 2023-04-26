@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title_head%}
+<title>Eliminar Animal</title>
+{% endblock title_head%}
+
+{% block h1_header%}
+<h1>Eliminar Animal</h1>
+{% endblock h1_header%}
+
+
+{% block contenido%}
+<!-- A diferencia del anterior ahora poniendo solo animal.id ya sabe el animal porque la CBV de por sí ay tiene el 
+objeto completo(animal en este caso)-->
+<form action={% url 'eliminar_animal' animal.id %} method="POST">
+    {% csrf_token %}
+    <p>Desea realmente eliminar el animal {{animal}}</p>
+    <button>Eliminar</button>
+</form>
+{% endblock contenido%}

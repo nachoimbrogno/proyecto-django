@@ -11,8 +11,11 @@ from django.shortcuts import render, redirect
 from inicio.forms import CreacionAnimalFormulario, BuscarAnimal, ModificarAnimalFormulario
 #Import para poder listar objetos con CBV
 from django.views.generic.list import ListView
-#Import para poder crear objetos con CBV
-from django.views.generic.edit import CreateView
+#Import para poder crear y modificar y eliminar objetos con CBV
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+#Import para poder ver objetos con CBV
+from django.views.generic.detail import DetailView
+
 
 def mi_vista(request):
     # return HttpResponse ("<h1>Mi primera vista</h1>")
@@ -192,3 +195,41 @@ class CrearAnimal(CreateView):
     success_url = '/inicio/animales/'
     # aca se le indica los capos que quiero que se le pida al usuario en la creacion:
     fields = ['nombre', 'edad']
+
+#a la clase se le tiene que pasar como argumento UpdateView. Para editar es igual que crear
+class ModificarAnimal(UpdateView):
+    #primero le tengo que decir el modelo con el que va a trabajar.
+    model = Animal
+    #Despues el template con el que va a laburar. Ya no le paso el diccionario sino que recibira el un form.
+    #generado automaticamente por django
+    template_name = 'inicio/CBV/modificar_animales.html'
+    #PAra que cuando se cree el objeto correctamente con la vista un animal quiero que vaya a esa url, para eso se le pasa 
+    # la url base a la que quiero que vaya (el contexto), desde el puerto para atras: 
+    #la url es http://127.0.0.1:8000/inicio/animales/  --> inicio/animales/ 
+    success_url = '/inicio/animales/'
+    # aca se le indica los capos que quiero que se le pida al usuario en la creacion:
+    fields = ['nombre', 'edad', 'cant_dientes']
+
+#a la clase se le tiene que pasar como argumento DeleteView 
+class EliminarAnimal(DeleteView):
+    #primero le tengo que decir el modelo con el que va a trabajar.
+    model = Animal
+    #Despues el template con el que va a laburar. Ya no le paso el diccionario sino que recibira el un form.
+    #generado automaticamente por django
+    template_name = 'inicio/CBV/eliminar_animal.html'
+    #PAra que cuando se cree el objeto correctamente con la vista un animal quiero que vaya a esa url, para eso se le pasa 
+    # la url base a la que quiero que vaya (el contexto), desde el puerto para atras: 
+    #la url es http://127.0.0.1:8000/inicio/animales/  --> inicio/animales/ 
+    success_url = '/inicio/animales/'
+
+#a la clase se le tiene que pasar como argumento DetailView 
+class MostrarAnimal(DetailView):
+    #primero le tengo que decir el modelo con el que va a trabajar.
+    model = Animal
+    #Despues el template con el que va a laburar. Ya no le paso el diccionario sino que recibira el un form.
+    #generado automaticamente por django
+    template_name = 'inicio/CBV/mostrar_animal.html'
+    #PAra que cuando se cree el objeto correctamente con la vista un animal quiero que vaya a esa url, para eso se le pasa 
+    # la url base a la que quiero que vaya (el contexto), desde el puerto para atras: 
+    #la url es http://127.0.0.1:8000/inicio/animales/  --> inicio/animales/ 
+    success_url = '/inicio/animales/'
