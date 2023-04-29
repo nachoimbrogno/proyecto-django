@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title_head %}
+    <title>Editar Perfil</title>
+{% endblock title_head %}
+
+{% block h1_header %}
+<h1>Editar Perfil</h1>
+{% endblock h1_header %}
+
+{% block contenido%}
+
+<!--Si hay error en la carga de los datos del usuario mostrará esto:-->
+{%if formulario.errors %}
+<p style="color: red"> Hay errores</p>
+{%endif%}
+<!--Tener en cuanta que la primera vez que vaya a editar perfil, si viene por get (sin datos) ya va a estar en 
+en el path editar_perfil de urls.py, entonces lo que puedo hacer en action es sacarle el {% url 'editar_perfil' %}
+y dejarle un string vacio (action=''), lo que se le ponga al action como string se va a agregar a la direccion
+donde este ubicado en ese momento, porque si no le pongo nada es redundante va a ir a la misma, entonces, puedo 
+elegir si poner asi <form action="{% url 'editar_perfil' %}" method="POST"> o asi <form action='' method="POST"> -->
+<form action='' method="POST">
+    {% csrf_token %}
+    <table>
+        {{formulario}}
+    <table>
+    <button type='button'><a class="navbar-brand" href={% url 'cambio_contrasenia' %}>Cambiar contrasenia</a></button>
+    <button>Guardar Cambios</button>
+</form>
+{% endblock contenido%}

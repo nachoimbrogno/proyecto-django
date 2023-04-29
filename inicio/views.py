@@ -9,6 +9,8 @@ from inicio.models import Animal
 from django.shortcuts import render, redirect
 #metraigo el formulario de forms.py
 from inicio.forms import CreacionAnimalFormulario, BuscarAnimal, ModificarAnimalFormulario
+#Para poder en success_url poner un "alias" y no el string con el path a donde ir
+from django.urls import reverse_lazy
 #Import para poder listar objetos con CBV
 from django.views.generic.list import ListView
 #Import para poder crear y modificar y eliminar objetos con CBV
@@ -19,6 +21,8 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 #Iporto para poder usar decoradores
 from django.contrib.auth.decorators import login_required
+
+
 
 
 def mi_vista(request):
@@ -194,10 +198,9 @@ class CrearAnimal(CreateView):
     #Despues el template con el que va a laburar. Ya no le paso el diccionario sino que recibira el un form.
     #generado automaticamente por django
     template_name = 'inicio/CBV/crear_animal_v3.html'
-    #PAra que cuando se cree el objeto correctamente con la vista un animal quiero que vaya a esa url, para eso se le pasa 
-    # la url base a la que quiero que vaya (el contexto), desde el puerto para atras: 
-    #la url es http://127.0.0.1:8000/inicio/animales/  --> inicio/animales/ 
-    success_url = '/inicio/animales/'
+    #Luego de la modificacion utilizo el modulo reverse_lazy para apuntar al name del path de urls.py (una especie
+    # de alias de la url) para ver como lo hice antes ver las otras vistas de CBV, la proxima de abajo por ejeplo.
+    success_url =reverse_lazy('listar_animales')
     # aca se le indica los capos que quiero que se le pida al usuario en la creacion:
     fields = ['nombre', 'edad']
 

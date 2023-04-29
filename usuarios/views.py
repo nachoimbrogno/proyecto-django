@@ -1,10 +1,15 @@
 from django.shortcuts import render, redirect
 #para poder usuar el autenticador de Django
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
+#Importo para poder usar la clase basada en vista para modificar la contraaseña
+from django.contrib.auth.views import PasswordChangeView
 #Para poder usuar el authenticate de Django
 from django.contrib.auth import authenticate, login as django_login
-from usuarios.forms import MiFormularioDeCreacion
-
+from usuarios.forms import MiFormularioDeCreacion, EdicionDatosUsuario
+#Iporto para poder usar decoradores
+from django.contrib.auth.decorators import login_required
+#Para poder en success_url poner un "alias" y no el string con el path a donde ir
+from django.urls import reverse_lazy
 
 # Create your views here.
 
@@ -55,3 +60,30 @@ def registro(request):
     #a formulario le asigno el formulario que cree en forms.
     formulario = MiFormularioDeCreacion()
     return render(request, 'usuarios/registro.html', {'formulario': formulario})
+
+#Vista para editar daros del usuario. Necesito importar el formulario que cree en forms(from usuarios.forms import EdicionDatosUsuario )
+#uso el login_required porque solo acceder cuando el usuario esta logueado para cambiar su perfil.
+#recordar importar el decorador: from django.contrib.auth.decorators import login_required
+@login_required
+def editar_perfil(request):
+    if request.method == "POST":
+        #Este formulario trabaja distinto, le tengo que indicar cuál es el usuario que va a modificar para
+        #luego poder guardarlo, para eso le agrego un nuevo argument instance que le voy a pasar el usuario
+        #que esta logueado, eso lo tomo del request.
+        formulario = EdicionDatosUsuario(request.POST, instance=request.user)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect ('inicio')
+        else:
+            return render(request, 'usuarios/editar_perfil.html',{'formulario':formulario})
+    #le paso el instance para que genere el formulario con los datos del usuario que esta logueado. Aca irá
+    #cuando el usuario esta logueada y le mostrará los datos personales gracias el request.user
+    formulario = EdicionDatosUsuario(instance=request.user)
+    return render(request, 'usuarios/editar_perfil.html', {'formulario': formulario})
+
+#Clase basa en vista parra modificar la contraseña, por eso que herede PasswordChangeView
+class CambioContrasenia(PasswordChangeView):
+    #indicamos el template name, osea el template donde esta el html.
+    template_name = 'usuarios/cambiar_contrasenia.html'
+    #Recordar importar  para poder usar el reverse_lazy: from django.urls import reverse_lazy
+    success_url = reverse_lazy('editar_perfil')

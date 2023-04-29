@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+
+{% block title_head %}
+    <title>Cambio Contrasenia</title>
+{% endblock title_head %}
+
+{% block h1_header %}
+<h1>Cambio Contrasenia</h1>
+{% endblock h1_header %}
+
+{% block contenido%}
+
+<!--Si hay error en la carga de los datos del usuario mostrará esto:-->
+{%if formulario.errors %}
+<p style="color: red"> Hay errores</p>
+{%endif%}
+<!--El formulario con la carga de usuario.-->
+<form action="{% url 'cambio_contrasenia' %}" method="POST">
+    {% csrf_token %}
+    <table>
+        <!--RECORDAR QUE AL SER UN FORMULARIO DE CBV HAY QUE PASAR FORM EN INGLES Y NO FORMULARIO.-->
+        {{form}}
+    <table>
+    <button>Cambiar</button>
+</form>
+
+{% endblock contenido%}

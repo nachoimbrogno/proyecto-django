@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 
 #creo un formulario "MiFormularioDeCreacion" y le pasó coo basico el UserCreationForm, antes importarlo
@@ -22,4 +22,17 @@ class MiFormularioDeCreacion(UserCreationForm):
         #lo que e le dice es que por cada clave k  del diccionario genere un string vacio.
         help_texts = {k: '' for k in fields}
 
-    
+#creo un formulario "EdicionDatosUsuario" y le pasó como basico (que herede) el UserChangeForm, antes importarlo
+#para pder customizarlo.
+class EdicionDatosUsuario(UserChangeForm):
+    #edito la parte de password para que no lo muestre.
+    password = None
+    #Creo los labels para que no me aparezca en ingles en la pagina.
+    email = forms.EmailField()
+    first_name = forms.CharField(label = 'Nombre', max_length =20)
+    last_name = forms.CharField(label = 'Apellido', max_length=20)
+    class Meta:
+        model = User
+        #vamos a hacer que solo pueda mosificar el email y campos que estaban en la parte de admin, esos campos
+        #son los nombres del usuario y se llaman first y last name.
+        fields = ['email', 'first_name', 'last_name']

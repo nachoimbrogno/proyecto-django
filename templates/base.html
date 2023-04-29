@@ -29,12 +29,19 @@
                 <!--<a class="navbar-brand" href="{% url 'crear_animal' %}">Crear Animal</a> -->
                 <a class="navbar-brand" href="{% url 'listar_animales' %}">Animales</a>
                 <a class="navbar-brand" href="{% url 'prueba_render' %}">Prueba Render</a>
-                <a class="btn btn-primary" href="{% url 'login' %}">Iniciar Sesion</a>
-                <!--Esto lo hago para mostrar el usuario logueado por pantalla. esto es porque en e request, en el 
-                apartado de user esta el nombre del usuario, username-->
-                <a href="#">{{request.user.username}}</a> 
-                <a class="btn btn-primary" href="{% url 'registro' %}">Registrarse</a>
-                <a class="btn btn-primary" href="{% url 'logout' %}">Cerrar Sesion</a>
+                <!--Valido si el usuario esta iniciado, si lo esta solo mostrara el boton de cerrar Sesion
+                si no lo esta mostrar iniciar sesion o logout 
+                lo que hace esto es preguntar si el usuario de la request esta logueado o no.-->
+                {% if request.user.is_authenticated  %}
+                    <a href={% url 'editar_perfil'%}>{{request.user.username}}</a> 
+                    <a class="btn btn-primary" href="{% url 'logout' %}">Cerrar Sesion</a>
+                {%else%}
+                    <a class="btn btn-primary" href="{% url 'login' %}">Iniciar Sesion</a>
+                    <!--Esto lo hago para mostrar el usuario logueado por pantalla. esto es porque en e request, en el 
+                    apartado de user esta el nombre del usuario, username.
+                    si hace click en el usuairo lo va a llevar a editar el perfil-->                
+                    <a class="btn btn-primary" href="{% url 'registro' %}">Registrarse</a>
+                {% endif  %}
             </div>
         </nav>
         <!-- Masthead-->
