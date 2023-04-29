@@ -31,8 +31,10 @@ class EdicionDatosUsuario(UserChangeForm):
     email = forms.EmailField()
     first_name = forms.CharField(label = 'Nombre', max_length =20)
     last_name = forms.CharField(label = 'Apellido', max_length=20)
+    #Aca le digo que al modificar el usuario le pida un avatar pero no obligaorio.
+    avatar = forms.ImageField(required=False)
     class Meta:
         model = User
         #vamos a hacer que solo pueda mosificar el email y campos que estaban en la parte de admin, esos campos
         #son los nombres del usuario y se llaman first y last name.
-        fields = ['email', 'first_name', 'last_name']
+        fields = ['email', 'first_name', 'last_name', 'avatar']

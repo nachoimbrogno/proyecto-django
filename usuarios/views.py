@@ -10,6 +10,7 @@ from usuarios.forms import MiFormularioDeCreacion, EdicionDatosUsuario
 from django.contrib.auth.decorators import login_required
 #Para poder en success_url poner un "alias" y no el string con el path a donde ir
 from django.urls import reverse_lazy
+from usuarios.models import InformacionExtra
 
 # Create your views here.
 
@@ -66,19 +67,35 @@ def registro(request):
 #recordar importar el decorador: from django.contrib.auth.decorators import login_required
 @login_required
 def editar_perfil(request):
+    # get or create lo que hace es tratar de traernos el objeto de ingormacion extra que tenga en su usuario
+    # el usuario que esta creado o en cso que no lo encuentre crearlo, eso devolvera 2 cosas, el primer dato es informacion
+    # informacion_extra y el segundo va a ser un true o un false que indicara si se creo o un false si lo trajo y no se
+    # creo. Recordar importar el modelo from usuarios.models import InformacionExtra
+    informacion_extra, creado = InformacionExtra.objects.get_or_create(user=request.user)
     if request.method == "POST":
         #Este formulario trabaja distinto, le tengo que indicar cuál es el usuario que va a modificar para
         #luego poder guardarlo, para eso le agrego un nuevo argument instance que le voy a pasar el usuario
         #que esta logueado, eso lo tomo del request.
-        formulario = EdicionDatosUsuario(request.POST, instance=request.user)
+        #PAra que muestre el avatar le tengo que mandar el request.FILES tabien porque van encriptados en otros
+        # formato y no solo como diccionario.
+        formulario = EdicionDatosUsuario(request.POST, request.FILES, instance=request.user)
         if formulario.is_valid():
+            #tengo que buscar los datos relacionados al usuario, para eso busco el  modelo nuevo (solo sirve para
+            # OneToOneField y tengo que poner el nombre del modelo todo en minuscula) por que avatar? porque es
+            #el capo que agregue en el formulario.Asi relaciono el modelo
+            #el if es para que si no pongo avatar no lo guarde
+            if formulario.is_valid():
+                request.user.informacionextra.avatar = formulario.cleaned_data.get('avatar')
+            #como no es parte del modelo User le tengo que indicar que esa informacion extra tambine se guarde.
+            request.user.informacionextra.save()
             formulario.save()
             return redirect ('inicio')
         else:
             return render(request, 'usuarios/editar_perfil.html',{'formulario':formulario})
     #le paso el instance para que genere el formulario con los datos del usuario que esta logueado. Aca irá
     #cuando el usuario esta logueada y le mostrará los datos personales gracias el request.user
-    formulario = EdicionDatosUsuario(instance=request.user)
+    #PAra que me muestre el avatar por pantalla le mando el initial={'avatar':request.user.informacionextra.avatar}
+    formulario = EdicionDatosUsuario(initial={'avatar':request.user.informacionextra.avatar},instance=request.user)
     return render(request, 'usuarios/editar_perfil.html', {'formulario': formulario})
 
 #Clase basa en vista parra modificar la contraseña, por eso que herede PasswordChangeView

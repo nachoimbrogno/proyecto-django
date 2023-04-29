@@ -19,7 +19,9 @@ en el path editar_perfil de urls.py, entonces lo que puedo hacer en action es sa
 y dejarle un string vacio (action=''), lo que se le ponga al action como string se va a agregar a la direccion
 donde este ubicado en ese momento, porque si no le pongo nada es redundante va a ir a la misma, entonces, puedo 
 elegir si poner asi <form action="{% url 'editar_perfil' %}" method="POST"> o asi <form action='' method="POST"> -->
-<form action='' method="POST">
+<!--Para poder mostrar el avatar le agrego enctype que me permitirá indicar el tipo de encruptado que utilizara
+el formulario para mandar info -->
+    <form action='' method="POST" enctype='multipart/form-data'>
     {% csrf_token %}
     <table>
         {{formulario}}

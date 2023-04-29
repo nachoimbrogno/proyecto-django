@@ -19,7 +19,6 @@ urlpatterns = [
     #URL para mostrar un animal especifico a la cual solo le pasaremos el id del animal
     #path('animales/<int:id_animal>', views.mostrar_animal, name='mostrar_animal'),
     #path('animales/<int:id_animal>/modificar', views.modificar_animal, name='modificar_animal'),
-
     #Animales con CBV (clases basadas con vistas)
     path('animales/', views.ListaAnimales.as_view(), name='listar_animales'),   
     path('animales/crear/', views.CrearAnimal.as_view(), name='crear_animal'),

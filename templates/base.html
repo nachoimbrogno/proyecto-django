@@ -33,6 +33,12 @@
                 si no lo esta mostrar iniciar sesion o logout 
                 lo que hace esto es preguntar si el usuario de la request esta logueado o no.-->
                 {% if request.user.is_authenticated  %}
+                <!--preguntar si el usuario tiene o no cargado un avatar para que no se muestre feo por pantalla
+                al momento de cargarlo.-->
+                    {% if request.user.informacionextra.avatar %}
+                    <!--para mostrar el avatar por pantalla-->
+                        <img src={{request.user.informacionextra.avatar.url}} alt="" height="40px">
+                    {% endif %}
                     <a href={% url 'editar_perfil'%}>{{request.user.username}}</a> 
                     <a class="btn btn-primary" href="{% url 'logout' %}">Cerrar Sesion</a>
                 {%else%}

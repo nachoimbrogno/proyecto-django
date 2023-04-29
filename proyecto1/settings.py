@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -125,3 +126,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/usuarios/login/'
+#es la url donde se va a encontrar la parte de imagenes 
+MEDIA_URL = '/media/'
+#le digo que el sistema operativo arme un path con el base_dir y  le agregue media, el sistema operativo hay que
+#importarlo import os aca arriba de todo.
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
