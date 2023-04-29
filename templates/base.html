@@ -23,13 +23,18 @@
         <nav class="navbar navbar-light bg-light static-top">
             <div class="container">
                 <a class="navbar-brand" href="{% url 'inicio' %}">Inicio</a>
-                <a class="navbar-brand" href="{% url 'mostrar_fecha' %}">Mostrar Fecha</a>
-                <a class="navbar-brand" href="{% url 'mi_primer_template' %}">Mi Primer Template</a>
-                <a class="navbar-brand" href="{% url 'prueba_template' %}">Prueba Template</a>
-                <a class="navbar-brand" href="{% url 'crear_animal' %}">Crear Animal</a>
+                <!--<a class="navbar-brand" href="{% url 'mostrar_fecha' %}">Mostrar Fecha</a> -->
+                <!--<a class="navbar-brand" href="{% url 'mi_primer_template' %}">Mi Primer Template</a> -->
+                <!--<a class="navbar-brand" href="{% url 'prueba_template' %}">Prueba Template</a> -->
+                <!--<a class="navbar-brand" href="{% url 'crear_animal' %}">Crear Animal</a> -->
                 <a class="navbar-brand" href="{% url 'listar_animales' %}">Animales</a>
                 <a class="navbar-brand" href="{% url 'prueba_render' %}">Prueba Render</a>
-                <a class="btn btn-primary" href="#signup">Sign Up</a>
+                <a class="btn btn-primary" href="{% url 'login' %}">Iniciar Sesion</a>
+                <!--Esto lo hago para mostrar el usuario logueado por pantalla. esto es porque en e request, en el 
+                apartado de user esta el nombre del usuario, username-->
+                <a href="#">{{request.user.username}}</a> 
+                <a class="btn btn-primary" href="{% url 'registro' %}">Registrarse</a>
+                <a class="btn btn-primary" href="{% url 'logout' %}">Cerrar Sesion</a>
             </div>
         </nav>
         <!-- Masthead-->

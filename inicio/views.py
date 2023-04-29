@@ -15,6 +15,10 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 #Import para poder ver objetos con CBV
 from django.views.generic.detail import DetailView
+#Iporto para poder usar mixin 
+from django.contrib.auth.mixins import LoginRequiredMixin
+#Iporto para poder usar decoradores
+from django.contrib.auth.decorators import login_required
 
 
 def mi_vista(request):
@@ -65,6 +69,7 @@ def prueba_template(request):
     template_renderizado = template.render(datos)
     return HttpResponse(template_renderizado)
 
+@login_required
 def prueba_render(request):
     datos = {'nombre': 'Pepe'}
     # template = loader.get_template(r'prueba_render.html')
@@ -197,7 +202,7 @@ class CrearAnimal(CreateView):
     fields = ['nombre', 'edad']
 
 #a la clase se le tiene que pasar como argumento UpdateView. Para editar es igual que crear
-class ModificarAnimal(UpdateView):
+class ModificarAnimal(LoginRequiredMixin, UpdateView):
     #primero le tengo que decir el modelo con el que va a trabajar.
     model = Animal
     #Despues el template con el que va a laburar. Ya no le paso el diccionario sino que recibira el un form.
@@ -211,7 +216,7 @@ class ModificarAnimal(UpdateView):
     fields = ['nombre', 'edad', 'cant_dientes']
 
 #a la clase se le tiene que pasar como argumento DeleteView 
-class EliminarAnimal(DeleteView):
+class EliminarAnimal(LoginRequiredMixin, DeleteView):
     #primero le tengo que decir el modelo con el que va a trabajar.
     model = Animal
     #Despues el template con el que va a laburar. Ya no le paso el diccionario sino que recibira el un form.
